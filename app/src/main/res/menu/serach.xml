@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <item android:id="@+id/search"
+            android:title="@string/search_title"
+
+            android:icon="@drawable/ic_add_box_black_24dp"
+            app:showAsAction="collapseActionView|ifRoom">
+                 <menu>
+                    <item android:id="@+id/post"
+                    android:title="Post an Ad" />
+             </menu>
+    </item>
+            <item android:id="@+id/info"
+                android:title="info"
+                android:icon="@drawable/ic_info_black_24dp"
+                app:showAsAction="collapseActionView|ifRoom">
+                <menu>
+                    <item android:id="@+id/about"
+                        android:title="Contact Developer" />
+                    <item
+                        android:id="@+id/menu_item_share"
+                        app:showAsAction="ifRoom"
+                        android:title="Share app"
+                        android:actionProviderClass=
+                            "android.widget.ShareActionProvider" />
+                </menu>
+
+    </item>
+</menu>

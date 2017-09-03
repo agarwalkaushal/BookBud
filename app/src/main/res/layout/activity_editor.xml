@@ -1,0 +1,221 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@color/colorAccent4"
+    tools:context=".EditorActivity">
+
+    <!-- Overview category -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/shape"
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        android:elevation="20dp"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <!-- Label -->
+        <TextView
+            android:text="NAME"
+            android:layout_weight="1"
+            style="@style/CategoryStyle1"
+            android:layout_width="0dp"
+            android:paddingRight="30dp"
+            android:paddingTop="15dp"
+            android:layout_height="wrap_content" />
+            <!-- Name field -->
+        <EditText
+            android:id="@+id/input_name"
+            android:maxLength="30"
+            android:inputType="textCapWords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        android:padding="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:text="REG NO."
+                android:maxLength="9"
+                style="@style/CategoryStyle1"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:paddingRight="16dp"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/input_reg_n0"
+                android:hint="Optional"
+                android:inputType="textCapCharacters"
+                style="@style/EditorFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:text="CONTACT"
+            style="@style/CategoryStyle1"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:paddingRight="6dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/input_phone"
+            android:inputType="number"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:text="EMAIL ID"
+            style="@style/CategoryStyle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/input_email"
+            android:inputType="textEmailAddress"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="INSTITUTION, LOCATION"
+            style="@style/CategoryStyle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/input_code"
+            android:hint="leave blank if from VIT, Vellore"
+            android:inputType="textCapCharacters"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="BOOK NAME"
+            style="@style/CategoryStyle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/input_course"
+            android:maxLength="48"
+            android:inputType="textCapWords"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="AUTHOR"
+            style="@style/CategoryStyle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/input_author"
+            android:inputType="textCapWords"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="EDITION"
+            style="@style/CategoryStyle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/input_edition"
+            android:inputType="textCapSentences"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="PUBLISHER"
+            style="@style/CategoryStyle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/input_publisher"
+            android:hint="Optional"
+            android:inputType="textCapSentences"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="DESCRIPTION / CONDITION"
+            style="@style/CategoryStyle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/input_desc"
+            android:hint="Optional"
+            android:inputType="textCapSentences"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/container_gender"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Label -->
+            <TextView
+                android:text="Share for"
+                style="@style/CategoryStyle1" />
+
+            <!-- Input field -->
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <!-- Gender drop-down spinner -->
+                <Spinner
+                    android:id="@+id/book_spinner"
+                    android:layout_height="48dp"
+                    android:layout_width="wrap_content"
+                    android:paddingRight="16dp"
+                    android:spinnerMode="dropdown"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+    <TextView
+        android:text="Price"
+        style="@style/CategoryStyle1"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:paddingRight="30dp"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/input_price"
+        android:hint="leave blank if free"
+        android:inputType="number"
+        style="@style/EditorFieldStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

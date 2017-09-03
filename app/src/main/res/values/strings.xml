@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">BookBud</string>
+    <string name="main"><font fgcolor="#111111">Books OnDemand</font></string>
+    <string name="editor"><font fgcolor="#111111">Add a Book</font></string>
+    <string name="action_save">Save</string>
+    <string name="search_title">Course Code</string>
+    <string name="search_hint">Enter here</string>
+
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Welcome!</string>
+    <string name="slide_1_desc">If you\'re looking to get rid of your old books there\'s no need to look any further.</string>
+
+    <string name="slide_2_title">DISCLAIMER</string>
+    <string name="slide_2_desc">Book movie tickets for your family and friends!</string>
+
+    <string name="slide_3_title">Great Discounts</string>
+    <string name="slide_3_desc">Best discounts on every single service we offer!</string>
+</resources>

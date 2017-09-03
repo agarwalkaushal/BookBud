@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/bg_screen2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="40dp"
+            android:paddingBottom="20dp"
+            android:text="@string/slide_2_title"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/slide_title"
+            android:textStyle="bold" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@drawable/shape2">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="@dimen/desc_padding"
+        android:paddingRight="@dimen/desc_padding"
+        android:text="1. Internet Connection is required."
+        android:textStyle="italic"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/slide_desc" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="@dimen/desc_padding"
+            android:paddingRight="@dimen/desc_padding"
+            android:textStyle="italic"
+            android:text="2. Use the + icon to post an Ad."
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/slide_desc" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="@dimen/desc_padding"
+            android:paddingRight="@dimen/desc_padding"
+            android:textStyle="italic"
+            android:text="3. Fill all the fields. Optional one's can be left out."
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/slide_desc" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="@dimen/desc_padding"
+            android:paddingRight="@dimen/desc_padding"
+            android:textStyle="italic"
+            android:text="4. Long press the Ad to either send a SMS or EMAIL."
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/slide_desc" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="@dimen/desc_padding"
+            android:paddingRight="@dimen/desc_padding"
+            android:textStyle="italic"
+            android:text="5. Price of the book is solely based on the user's choice. It can be set free also."
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/slide_desc" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="@dimen/desc_padding"
+            android:paddingRight="@dimen/desc_padding"
+            android:textStyle="italic"
+            android:text="6. Searching can be done by Book name or Author."
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/slide_desc" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="@dimen/desc_padding"
+            android:paddingRight="@dimen/desc_padding"
+            android:textStyle="italic"
+            android:text="7. Administrator is not responsible for any negotiation."
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/slide_desc" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingTop="12dp"
+        android:paddingLeft="@dimen/desc_padding"
+        android:paddingRight="@dimen/desc_padding"
+        android:text="*ENTER VALID CREDENTIALS ONLY"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingTop="12dp"
+        android:paddingLeft="@dimen/desc_padding"
+        android:paddingRight="@dimen/desc_padding"
+        android:text="*FOR PURPOSE OF EDUCATIONAL INSTITUTION'S ONLY"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+</LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

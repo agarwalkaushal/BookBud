@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorAccent5"
+    tools:context="com.bookbud.hp.firebasebook.info">
+
+        <TextView
+            android:padding="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="italic|bold"
+            android:gravity="center"
+            android:textColor="@color/colorAccent3"
+            android:text="If you wish to modify or remove your Ad, report any bugs contact developer below"
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp"
+            android:orientation="horizontal">
+                <ImageView
+                    android:background="?android:attr/selectableItemBackground"
+                    android:id="@+id/facebook"
+                    android:elevation="30dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:layout_weight="1"
+                    android:src="@drawable/if_facebook_2308066"/>
+                <ImageView
+                    android:background="?android:attr/selectableItemBackground"
+                    android:id="@+id/gmail"
+                    android:elevation="30dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:src="@drawable/google"/>
+                <ImageView
+                    android:background="?android:attr/selectableItemBackground"
+                    android:id="@+id/linkedin"
+                    android:layout_width="50dp"
+                    android:elevation="30dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:src="@drawable/if_linkedin_2308061"/>
+        </LinearLayout>
+        <TextView
+            android:padding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="italic|bold"
+            android:gravity="center"
+            android:textColor="@color/colorAccent3"
+            android:text="..."
+            tools:layout_editor_absoluteY="0dp"
+            tools:layout_editor_absoluteX="8dp" />
+</LinearLayout>
