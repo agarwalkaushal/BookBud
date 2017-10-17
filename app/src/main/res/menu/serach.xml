@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/filter"
+        android:title="@string/search_title"
+
+        android:icon="@drawable/ic_filter_list_black_24dp"
+        app:showAsAction="collapseActionView|ifRoom"
+        >
+        <menu>
+            <item android:id="@+id/vit"
+                android:title="VIT, Vellore" />
+            <item android:id="@+id/others"
+                android:title="Others" />
+            <item
+                android:id="@+id/all"
+                app:showAsAction="ifRoom"
+                android:title="All Records"
+                android:actionProviderClass=
+                    "android.widget.ShareActionProvider" />
+        </menu>
+        <!--
+    </item>
         <item android:id="@+id/search"
             android:title="@string/search_title"
 
@@ -10,7 +30,9 @@
                     <item android:id="@+id/post"
                     android:title="Post an Ad" />
              </menu>
+             -->
     </item>
+
             <item android:id="@+id/info"
                 android:title="info"
                 android:icon="@drawable/ic_info_black_24dp"

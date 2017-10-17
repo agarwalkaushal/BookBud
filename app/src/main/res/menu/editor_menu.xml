@@ -27,5 +27,16 @@
         android:icon="@drawable/ic_done_black_24dp"
         app:showAsAction="always" />
 
-
+    <item
+        android:id="@+id/action_photo"
+        android:icon="@drawable/ic_camera_alt_black_24dp"
+        app:showAsAction="always"
+        android:title="Photo">
+    </item>
+    <item
+        android:id="@+id/upload_photo"
+        app:showAsAction="collapseActionView"
+        android:visible="false"
+        android:title="Photo">
+    </item>
 </menu>

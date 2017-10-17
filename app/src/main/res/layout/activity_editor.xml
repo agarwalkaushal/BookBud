@@ -1,6 +1,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -40,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+        <!--
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,6 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
     </LinearLayout>
+    -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -139,6 +142,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/input_edition"
+            android:hint="Optional"
             android:inputType="textCapSentences"
             style="@style/EditorFieldStyle"
             android:layout_width="match_parent"
@@ -217,5 +221,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     </LinearLayout>
+        <ImageView
+            android:paddingBottom="20dp"
+            android:clickable="true"
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:src="@drawable/add_image1"
+            android:layout_height="200dp" />
+
     </LinearLayout>
+
 </ScrollView>

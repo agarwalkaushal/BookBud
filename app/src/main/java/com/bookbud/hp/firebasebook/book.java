@@ -5,68 +5,72 @@ package com.bookbud.hp.firebasebook;
  */
 
 public class book {
-    public  String name;
-    public  String contact;
-    public  String author;
-    public  String course;
-    public  String code;
-    public  String regno;
-    public String email;
-    public String price;
-    public String desc;
-    public String edition;
-    public String publisher;
+    public  String a;
+    public  String b;
+    public  String c;
+    public  String k;
+    public  String e;
+    public  String f;
+    public String g;
+    public String h;
+    public String i;
+    public String j;
+    public String d;
+    public String image;
     public book()
     {}
-    public book(String nameofuser,String authorofbook, String coursename,String coursecode,String regnumber,String phnumber,String emailid,String pricei,String desci,String edi, String pubi) {
-        name = nameofuser;
-        contact=phnumber;
-        author=authorofbook;
-        course=coursename;
-        code=coursecode;
-        regno=regnumber;
-        email=emailid;
-        price=pricei;
-        edition=edi;
-        publisher=pubi;
-        desc=desci;
+    public book(String nameofuser,String authorofbook, String coursename,String coursecode,
+                String regnumber,String phnumber,String emailid,String pricei,String desci,String edi, String pubi, String img) {
+        a = nameofuser;
+        b=phnumber;
+        c=authorofbook;
+        d=coursename;
+        e=coursecode;
+        f=regnumber;
+        g=emailid;
+        h=pricei;
+        j=edi;
+        k=pubi;
+        i=desci;
+        image=img;
     }
     public String returnName()
     {
-        return  name;}
+        return  a;}
     public  String returnAuthor()
     {
-        return  author;}
+        return  c;}
     public String returnCourse()
     {
-        return  course;}
+        return d ;}
     public String returnCode()
     {
-        return  code;}
+        return  e;}
     public String returnContact()
     {
-        return  contact;}
+        return  b;}
     public String returnRegno()
     {
-        return  regno;}
+        return  f;}
     public String returnEmail()
     {
-        return  email;}
+        return  g;}
     public String returnPrice()
     {
-        return price;
+        return h;
     }
     public String returnDesc()
     {
-        return desc;
+        return i;
     }
     public String returnEdition()
     {
-        return edition;
+        return j;
     }
     public String returnPublisher()
     {
-        return publisher;
+        return k;
     }
+    public String returnImage(){ return image;}
 
 }

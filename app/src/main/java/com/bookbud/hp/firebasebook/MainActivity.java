@@ -1,5 +1,12 @@
 package com.bookbud.hp.firebasebook;
+
+import android.app.Dialog;
+
+import com.bumptech.glide.Glide;
+
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -7,8 +14,12 @@ import android.support.v7.widget.ShareActionProvider;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.content.Intent;
-import com.google.android.gms.ads.AdRequest;
+
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.data.DataFetcher;
+import com.bumptech.glide.load.model.stream.StreamModelLoader;
 import com.google.android.gms.ads.AdView;
+
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,21 +30,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,SwipeRefreshLayout.OnRefreshListener{
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
+    boolean doubleBackToExitPressedOnce = false;
     private String n;
     private String c;
     private String a;
@@ -43,34 +59,46 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private String e;
     private String p;
     private String d;
+    private String i;
+    public int count;
     private String contact;
     private String email;
     private String ed;
     private String pubi;
-    private AdView mAdView;
+    private String choice = "VIT";
     private SearchView mSearchView;
-    private ListView listView ;
+    private AdView mAdView;
+    private ListView listView;
     private ArrayList<book> b;
     private SwipeRefreshLayout swipeRefreshLayout;
-    boolean doubleBackToExitPressedOnce = false;
     private ShareActionProvider mShareActionProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
+
+
+        /*
         MobileAds.initialize(this, "ca-app-pub-1093385171813087/6490965707");
         AdRequest request = new AdRequest.Builder().addTestDevice("DB87789ADD286D94F9D5F938BA2BC5A6").build();
         request.isTestDevice(MainActivity.this);
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        listView = (ListView) findViewById(R.id.listview_with_fab);
-        mSearchView=(SearchView) findViewById(R.id.searchView1);
+        */
 
+        listView = (ListView) findViewById(R.id.listview_with_fab);
+        mSearchView = (SearchView) findViewById(R.id.searchView1);
         b = new ArrayList<book>();
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setRefreshing(true);
 
         DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
         connectedRef.addValueEventListener(new ValueEventListener() {
@@ -90,31 +118,56 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         });
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("books");
-        // Read from the database
-        ref.addValueEventListener(new ValueEventListener() {
+        database.getReference("books").orderByChild("a").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("Value of choice", choice);
                 b.clear();
+                count=0;
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-
+                    Log.e("Failed to read value.", "Before reading name");
                     n = (String) child.child("a").getValue();
-                    //Log.e("Name is :", n);
+                    Log.e("Failed to read value.", "After reading name");
+                    Log.e("Name is :", n);
                     a = (String) child.child("c").getValue();
                     cc = (String) child.child("e").getValue();
                     cn = (String) child.child("d").getValue();
                     c = (String) child.child("b").getValue();
-                    r = (String) child.child("f").getValue();
+                    r = child.getKey();
                     e = (String) child.child("g").getValue();
                     p = (String) child.child("h").getValue();
-                    d=(String) child.child("i").getValue();
-                    ed=(String) child.child("j").getValue();
-                    pubi=(String) child.child("k").getValue();
-                    b.add(new book(n, a, cn, cc, r, c, e, p,d,ed,pubi));
+                    d = (String) child.child("i").getValue();
+                    ed = (String) child.child("j").getValue();
+                    pubi = (String) child.child("k").getValue();
+                    i = (String) child.child("l").getValue();
+                    Log.e("Price is", p);
+
+                    switch (choice) {
+                        case "VIT":
+                            if (cc.contains("VIT")) {
+                                Log.e("It is VIT cc is ", cc);
+                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
+                                count+=1;
+                            }
+                            break;
+                        case "Others":
+                            if (!cc.contains("VIT")) {
+                                Log.e("Its not VIT cc is", cc);
+
+                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
+                                count+=1;
+                            }
+                            break;
+                        case "All Records":
+                            b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
+                            count+=1;
+                    }
 
                 }
+                Toast.makeText(MainActivity.this, "Number of books listed: "+count, Toast.LENGTH_SHORT).show();
+
                 BookAdapter itemsAdapter = new BookAdapter(MainActivity.this, b);
                 listView.setAdapter(itemsAdapter);
                 listView.setTextFilterEnabled(true);
@@ -136,12 +189,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     public void onRefresh() {
                         Log.e("Swipe ", "onRefresh called from SwipeRefreshLayout");
                         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference ref = database.getReference("books");
-                        // Read from the database
-                        ref.addValueEventListener(new ValueEventListener() {
+                        database.getReference("books").orderByChild("a").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                Log.e("Value of choice", choice);
                                 b.clear();
+                                count=0;
                                 // This method is called once with the initial value and again
                                 // whenever data at this location is updated.
                                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -152,15 +205,38 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                     cc = (String) child.child("e").getValue();
                                     cn = (String) child.child("d").getValue();
                                     c = (String) child.child("b").getValue();
-                                    r = (String) child.child("f").getValue();
+                                    r = child.getKey();
                                     e = (String) child.child("g").getValue();
                                     p = (String) child.child("h").getValue();
-                                    d=(String) child.child("i").getValue();
-                                    ed=(String) child.child("j").getValue();
-                                    pubi=(String) child.child("k").getValue();
-                                    b.add(new book(n, a, cn, cc, r, c, e, p,d,ed,pubi));
+                                    d = (String) child.child("i").getValue();
+                                    ed = (String) child.child("j").getValue();
+                                    pubi = (String) child.child("k").getValue();
+                                    i = (String) child.child("l").getValue();
+                                    Log.e("Value of cc", cc);
+
+                                    switch (choice) {
+                                        case "VIT":
+                                            if (cc.contains("VIT")) {
+                                                Log.e("It is VIT cc is ", cc);
+                                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
+                                                count+=1;
+                                            }
+                                            break;
+                                        case "Others":
+                                            if (!cc.contains("VIT")) {
+                                                Log.e("Its not VIT cc is", cc);
+
+                                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
+                                                count+=1;
+                                            }
+                                            break;
+                                        case "All Records":
+                                            b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
+                                            count+=1;
+                                    }
 
                                 }
+                                Toast.makeText(MainActivity.this, "Number of books listed: "+count, Toast.LENGTH_SHORT).show();
                                 BookAdapter itemsAdapter = new BookAdapter(MainActivity.this, b);
                                 listView.setAdapter(itemsAdapter);
                                 listView.setTextFilterEnabled(true);
@@ -183,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         );
 
         // Setup FAB to open EditorActivity
-        /*
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floating_action_button_fab_with_listview);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,121 +268,85 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 startActivity(intent);
             }
         });
-*/
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                listView.performLongClick();
                 book books = b.get(i);
-                contact=books.returnContact();
-                email=books.returnEmail();
-                registerForContextMenu(view);
+                Log.e("Value of i is", String.valueOf(i));
+                contact = books.returnContact();
+                email = books.returnEmail();
+
 
             }
         });
-
+        registerForContextMenu(listView);
 
     }
+/*
+    public void myClickHandler(View v) {
+
+        Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.image);
+        dialog.setTitle("This is my custom dialog box");
+        dialog.setCancelable(true);
+        RelativeLayout lin = (RelativeLayout) dialog.findViewById(R.id.child);
+        StorageReference ref = FirebaseStorage.getInstance().getReference(r);
+        //set up image view
+        ImageView img = (ImageView) dialog.findViewById(R.id.ImageView01);
+
+        Glide.with(this)
+                .using(new FirebaseImageLoader()).load(ref)
+                .into(img);
+
+        //now that the dialog is set up, it's time to show it
+        dialog.show();
+    }
+*/
     @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
-            }
-        }, 1500);
-    }
-
-    @Override
-    public void onRefresh() {
-
-    }
-    private void setupSearchView()
-    {
-        swipeRefreshLayout.setRefreshing(false);
-        mSearchView.setIconifiedByDefault(false);
-        mSearchView.setOnQueryTextListener(this);
-        mSearchView.setSubmitButtonEnabled(true);
-        mSearchView.setQueryHint("by Book Name or Author");
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText)
-    {
-        BookAdapter ca = (BookAdapter) listView.getAdapter();
-        Filter filter = ca.getFilter();
-
-
-        filter.filter(newText);
-        return true;
-        /*
-        if (TextUtils.isEmpty(newText)) {
-            listView.clearTextFilter();
-            //ca.getFilter().filter(null);
-        } else {
-            listView.setFilterText(newText);
-            //ca.getFilter().filter(newText);
-        }
-        */
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query)
-    {
-        return false;
-    }
-
-
-
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
-    {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Select The Action");
-        menu.add(0, v.getId(), 0, "SMS");//groupId, itemId, order, title
-        menu.add(0, v.getId(), 0, "EMAIL");
-    }
-    @Override
-    public boolean onContextItemSelected(MenuItem item){
-        Log.e("Value is: ","item is selected");
-        if(item.getTitle()=="SMS"){
-            Log.e("Value is: ",contact);
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", contact, null)));
-        }
-        else if(item.getTitle()=="EMAIL"){
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("message/rfc822");
-            intent.putExtra(android.content.Intent.EXTRA_EMAIL,new String[] {email});
-            startActivity(Intent.createChooser(intent, "Send email..."));
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.contact, menu);
 
-        }else{
-            return false;
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Log.e("Value is: ", "item is selected");
+        switch (item.getItemId()) {
+            case R.id.sms:
+                Log.e("Value is: ", contact);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", contact, null)));
+                return true;
+            case R.id.email:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{email});
+                startActivity(Intent.createChooser(intent, "Send email..."));
+                return true;
         }
         return true;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.serach, menu);
+        swipeRefreshLayout.setRefreshing(false);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.post:
-                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                startActivity(intent);
-                break;
+            //case R.id.post:
+            // Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+            //  startActivity(intent);
+            //  break;
             case R.id.menu_item_share:
                 mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
                 Intent i = new Intent(Intent.ACTION_SEND);
@@ -322,15 +362,119 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 Intent intent1 = new Intent(MainActivity.this, info.class);
                 startActivity(intent1);
                 break;
+            case R.id.vit:
+                choice = "VIT";
+                Snackbar snackbar = Snackbar
+                        .make(listView, "Swipe down to refresh list", Snackbar.LENGTH_LONG);
+
+                snackbar.show();
+                //Toast.makeText(MainActivity.this, "Swipe down to refresh list", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.others:
+                choice = "Others";
+                Snackbar snackbar1 = Snackbar
+                        .make(listView, "Swipe down to refresh list", Snackbar.LENGTH_LONG);
+
+                snackbar1.show();
+
+                //Toast.makeText(MainActivity.this, "Swipe down to refresh list", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.all:
+                Snackbar snackbar2 = Snackbar
+                        .make(listView, "Swipe down to refresh list", Snackbar.LENGTH_LONG);
+
+                snackbar2.show();
+                choice = "All Records";
+                //Toast.makeText(MainActivity.this, "Swipe down to refresh list", Toast.LENGTH_SHORT).show();
+                break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+
         return true;
     }
-    private void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
         }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 1500);
     }
 
+    @Override
+    public void onRefresh() {
+
+    }
+
+    private void setupSearchView() {
+        swipeRefreshLayout.setRefreshing(false);
+        mSearchView.setIconifiedByDefault(false);
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setSubmitButtonEnabled(true);
+        mSearchView.setQueryHint("by Book Name or Author");
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        BookAdapter ca = (BookAdapter) listView.getAdapter();
+        Filter filter = ca.getFilter();
+        filter.filter(newText);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+/*
+    public class FirebaseImageLoader implements StreamModelLoader<StorageReference> {
+
+        @Override
+        public DataFetcher<InputStream> getResourceFetcher(StorageReference model, int width, int height) {
+            return new FirebaseStorageFetcher(model);
+        }
+
+        private class FirebaseStorageFetcher implements DataFetcher<InputStream> {
+
+            private StorageReference mRef;
+
+            FirebaseStorageFetcher(StorageReference ref) {
+                mRef = ref;
+            }
+
+            @Override
+            public InputStream loadData(Priority priority) throws Exception {
+                return Tasks.await(mRef.getStream()).getStream();
+            }
+
+            @Override
+            public void cleanup() {
+                // No cleanup possible, Task does not expose cancellation
+            }
+
+            @Override
+            public String getId() {
+                return mRef.getPath();
+            }
+
+            @Override
+            public void cancel() {
+                // No cancellation possible, Task does not expose cancellation
+            }
+        }
+    }
+*/
 }
