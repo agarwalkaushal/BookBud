@@ -20,7 +20,7 @@ public class book {
     public book()
     {}
     public book(String nameofuser,String authorofbook, String coursename,String coursecode,
-                String regnumber,String phnumber,String emailid,String pricei,String desci,String edi, String pubi, String img) {
+                String regnumber,String phnumber,String emailid,String pricei,String desci,String edi, String pubi) {
         a = nameofuser;
         b=phnumber;
         c=authorofbook;
@@ -32,7 +32,7 @@ public class book {
         j=edi;
         k=pubi;
         i=desci;
-        image=img;
+
     }
     public String returnName()
     {
@@ -71,6 +71,5 @@ public class book {
     {
         return k;
     }
-    public String returnImage(){ return image;}
 
 }

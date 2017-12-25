@@ -33,7 +33,7 @@
                     android:layout_height="50dp"
                     android:clickable="true"
                     android:layout_weight="1"
-                    android:src="@drawable/if_facebook_2308066"/>
+                    android:src="@drawable/facebook"/>
                 <ImageView
                     android:background="?android:attr/selectableItemBackground"
                     android:id="@+id/gmail"
@@ -51,7 +51,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:src="@drawable/if_linkedin_2308061"/>
+                    android:src="@drawable/linkedin"/>
         </LinearLayout>
         <TextView
             android:padding="30dp"

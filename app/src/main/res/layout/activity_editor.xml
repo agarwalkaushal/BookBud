@@ -1,234 +1,441 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent1"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:background="@color/colorAccent4"
     tools:context=".EditorActivity">
 
-    <!-- Overview category -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:background="@drawable/shape"
-        android:layout_height="match_parent"
-        android:padding="4dp"
-        android:elevation="20dp"
-        android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <!-- Label -->
-        <TextView
-            android:text="NAME"
-            android:layout_weight="1"
-            style="@style/CategoryStyle1"
-            android:layout_width="0dp"
-            android:paddingRight="30dp"
-            android:paddingTop="15dp"
-            android:layout_height="wrap_content" />
-            <!-- Name field -->
-        <EditText
-            android:id="@+id/input_name"
-            android:maxLength="30"
-            android:inputType="textCapWords"
+        <RelativeLayout
+            android:id="@+id/add_image_rel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-        <!--
-    <LinearLayout
+            android:layout_height="200dp"
+            android:background="@color/colorAccent8"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/add_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:baselineAlignBottom="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_addbook"
+                app:borderWidth="0dp"
+                app:elevation="6dp"
+                app:fabSize="mini"
+                app:pressedTranslationZ="12dp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:scaleType="centerCrop" />
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        android:padding="10dp"
-            android:orientation="horizontal">
-            <TextView
-                android:text="REG NO."
-                android:maxLength="9"
-                style="@style/CategoryStyle1"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:paddingRight="16dp"
-                android:layout_height="wrap_content" />
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/ic_person_white_24dp" />
+
             <EditText
-                android:id="@+id/input_reg_n0"
-                android:hint="Optional"
-                android:inputType="textCapCharacters"
+                android:id="@+id/input_name"
                 style="@style/EditorFieldStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-    </LinearLayout>
-    -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal">
-        <TextView
-            android:text="CONTACT"
-            style="@style/CategoryStyle1"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:paddingRight="6dp"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/input_phone"
-            android:inputType="number"
-            style="@style/EditorFieldStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:theme="@style/EditorFieldStyle"
+                android:hint="Name"
+                android:inputType="textCapWords"
+                android:maxLength="30"
+                android:paddingRight="10dp"
+                android:paddingBottom="15dp"
+                android:textColor="@color/colorAccent2"
+                android:textCursorDrawable="@null"
+                android:cursorVisible="true"
+                android:textColorHint="@color/colorAccent5" />
+        </LinearLayout>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">
-        <TextView
-            android:text="EMAIL ID"
-            style="@style/CategoryStyle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/input_email"
-            android:inputType="textEmailAddress"
-            style="@style/EditorFieldStyle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="INSTITUTION, LOCATION"
-            style="@style/CategoryStyle1"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/ic_camera_alt_black_24dp" />
+
+            <EditText
+                android:id="@+id/input_reg_n0"
+                style="@style/EditorFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textCursorDrawable="@null"
+                android:cursorVisible="true"
+                android:theme="@style/EditorFieldStyle"
+                android:hint="Reg. no (optional)"
+                android:paddingBottom="15dp"
+                android:inputType="textCapCharacters"
+                android:maxLength="30"
+                android:paddingRight="10dp"
+                android:textColor="@color/colorAccent2"
+                android:textColorHint="@color/colorAccent5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/ic_phone_white_24dp" />
+
+            <EditText
+                android:id="@+id/input_phone"
+                style="@style/EditorFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/EditorFieldStyle"
+                android:textCursorDrawable="@null"
+                android:cursorVisible="true"
+                android:hint="Mobile"
+                android:paddingBottom="15dp"
+                android:inputType="number"
+                android:paddingRight="10dp"
+                android:textColor="@color/colorAccent2"
+                android:textColorHint="@color/colorAccent5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingBottom="5dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/ic_email_white_24dp" />
+
+            <EditText
+                android:id="@+id/input_email"
+                style="@style/EditorFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textCursorDrawable="@null"
+                android:cursorVisible="true"
+                android:theme="@style/EditorFieldStyle"
+                android:hint="Email"
+                android:paddingBottom="15dp"
+                android:inputType="textEmailAddress"
+                android:paddingRight="10dp"
+                android:textColor="@color/colorAccent2"
+                android:textColorHint="@color/colorAccent5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp">
+
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_business_white_24dp" />
+
         <EditText
             android:id="@+id/input_code"
-            android:hint="leave blank if from VIT, Vellore"
-            android:inputType="textCapCharacters"
             style="@style/EditorFieldStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="BOOK NAME"
-            style="@style/CategoryStyle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/input_course"
-            android:maxLength="48"
-            android:inputType="textCapWords"
-            style="@style/EditorFieldStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="AUTHOR"
-            style="@style/CategoryStyle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/input_author"
-            android:inputType="textCapWords"
-            style="@style/EditorFieldStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="EDITION"
-            style="@style/CategoryStyle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/input_edition"
-            android:hint="Optional"
-            android:inputType="textCapSentences"
-            style="@style/EditorFieldStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="PUBLISHER"
-            style="@style/CategoryStyle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/input_publisher"
-            android:hint="Optional"
-            android:inputType="textCapSentences"
-            style="@style/EditorFieldStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="DESCRIPTION / CONDITION"
-            style="@style/CategoryStyle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/input_desc"
-            android:hint="Optional"
-            android:inputType="textCapSentences"
-            style="@style/EditorFieldStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-        <LinearLayout
-            android:id="@+id/container_gender"
-            android:layout_width="match_parent"
-            android:padding="10dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- Label -->
-            <TextView
-                android:text="Share for"
-                style="@style/CategoryStyle1" />
-
-            <!-- Input field -->
-            <LinearLayout
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <!-- Gender drop-down spinner -->
-                <Spinner
-                    android:id="@+id/book_spinner"
-                    android:layout_height="48dp"
-                    android:layout_width="wrap_content"
-                    android:paddingRight="16dp"
-                    android:spinnerMode="dropdown"/>
-            </LinearLayout>
+            android:paddingBottom="15dp"
+            android:textCursorDrawable="@null"
+            android:cursorVisible="true"
+            android:theme="@style/EditorFieldStyle"
+            android:hint="Leave blank if from VIT, Vellore"
+            android:inputType="textCapCharacters"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorAccent2"
+            android:textColorHint="@color/colorAccent5" />
         </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal">
-    <TextView
-        android:text="Price"
-        style="@style/CategoryStyle1"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:paddingRight="30dp"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/input_price"
-        android:hint="leave blank if free"
-        android:inputType="number"
-        style="@style/EditorFieldStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    </LinearLayout>
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp">
+
         <ImageView
-            android:paddingBottom="20dp"
-            android:clickable="true"
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:src="@drawable/add_image1"
-            android:layout_height="200dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_book_white_24dp" />
 
+        <EditText
+            android:id="@+id/input_course"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/EditorFieldStyle"
+            android:hint="Book name"
+            android:textCursorDrawable="@null"
+            android:cursorVisible="true"
+            android:paddingBottom="15dp"
+            android:inputType="textCapWords"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorAccent2"
+            android:textColorHint="@color/colorAccent5" />
     </LinearLayout>
 
-</ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_camera_alt_black_24dp" />
+
+        <EditText
+            android:id="@+id/input_edition"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/EditorFieldStyle"
+            android:hint="Edition"
+            android:textCursorDrawable="@null"
+            android:cursorVisible="true"
+            android:paddingBottom="15dp"
+            android:inputType="textCapSentences"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorAccent2"
+            android:textColorHint="@color/colorAccent5" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_camera_alt_black_24dp" />
+
+        <EditText
+            android:id="@+id/input_publisher"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:theme="@style/EditorFieldStyle"
+            android:hint="Publisher"
+            android:textCursorDrawable="@null"
+            android:cursorVisible="true"
+            android:inputType="textCapSentences"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorAccent2"
+            android:textColorHint="@color/colorAccent5" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_edit_white_24dp" />
+
+        <EditText
+            android:id="@+id/input_author"
+            style="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:paddingBottom="15dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/EditorFieldStyle"
+            android:hint="Author"
+            android:textCursorDrawable="@null"
+            android:cursorVisible="true"
+            android:inputType="textCapWords"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorAccent2"
+            android:textColorHint="@color/colorAccent5" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_camera_alt_black_24dp" />
+
+        <EditText
+            android:id="@+id/input_desc"
+            android:theme="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:textCursorDrawable="@null"
+            android:cursorVisible="true"
+            android:hint="Description / Condition"
+            android:inputType="textCapSentences"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorAccent2"
+            android:textColorHint="@color/colorAccent5" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="20dp"
+            android:text="Share for"
+            android:textColor="@color/colorAccent2"
+            android:textSize="15sp" />
+
+        <Spinner
+            android:id="@+id/book_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent2"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_attach_money_white_24dp" />
+
+        <EditText
+            android:id="@+id/input_price"
+            android:theme="@style/EditorFieldStyle"
+            android:layout_width="match_parent"
+            android:paddingBottom="15dp"
+            android:textCursorDrawable="@null"
+            android:cursorVisible="true"
+            android:layout_height="wrap_content"
+            android:hint="Leave blank if free"
+            android:inputType="number"
+            android:paddingRight="10dp"
+            android:textColor="@color/colorAccent2"
+            android:textColorHint="@color/colorAccent5" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:paddingBottom="5dp"
+        android:text="*image is required for posting ad"
+        android:textColor="@color/colorAccent5" />
+
+</LinearLayout></ScrollView>

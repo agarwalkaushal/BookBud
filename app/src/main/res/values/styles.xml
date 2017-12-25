@@ -13,7 +13,7 @@
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />.
     <style name="MyActionBarStyle" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:backgroundStacked">@drawable/gradient3</item>
         <item name="backgroundStacked">@drawable/gradient3</item>
@@ -41,11 +41,14 @@
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
     </style>
     <!-- Style for an EditText field in the editor -->
-    <style name="EditorFieldStyle">
+    <style name="EditorFieldStyle" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="colorControlNormal">@color/colorAccent8</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorAccent8</item>
     </style>
 
     <!-- Style for the measurement units for an EditText field in the editor -->

@@ -1,12 +1,14 @@
 package com.bookbud.hp.firebasebook;
 
-import android.app.Dialog;
 
-import com.bumptech.glide.Glide;
-
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -14,12 +16,6 @@ import android.support.v7.widget.ShareActionProvider;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.content.Intent;
-
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.data.DataFetcher;
-import com.bumptech.glide.load.model.stream.StreamModelLoader;
-import com.google.android.gms.ads.AdView;
-
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,28 +24,28 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.Filter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
+    public int count;
     boolean doubleBackToExitPressedOnce = false;
+    AlphaAnimation inAnimation;
+    AlphaAnimation outAnimation;
+    ProgressBar progressBarHolder;
     private String n;
     private String c;
     private String a;
@@ -60,14 +56,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private String p;
     private String d;
     private String i;
-    public int count;
     private String contact;
     private String email;
     private String ed;
     private String pubi;
     private String choice = "VIT";
     private SearchView mSearchView;
-    private AdView mAdView;
     private ListView listView;
     private ArrayList<book> b;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -78,14 +72,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-            }
-        });
-
+        progressBarHolder = (ProgressBar) findViewById(R.id.progressBarHolder);
+        inAnimation = new AlphaAnimation(0f, 1f);
+        inAnimation.setDuration(200);
+        progressBarHolder.setAnimation(inAnimation);
+        progressBarHolder.setVisibility(View.VISIBLE);
 
         /*
         MobileAds.initialize(this, "ca-app-pub-1093385171813087/6490965707");
@@ -96,19 +87,42 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mAdView.loadAd(adRequest);
         */
 
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Get details on the currently active default data network
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            //Toast.makeText(MainActivity.this, "Active internet connection found", Toast.LENGTH_SHORT).show();
+            Snackbar snackbar1 = Snackbar
+                    .make(swipeRefreshLayout, "Active internet connection found", Snackbar.LENGTH_LONG);
+            snackbar1.show();
+        } else {
+            //Toast.makeText(MainActivity.this, "No internet connection ", Toast.LENGTH_SHORT).show();
+            Snackbar snackbar1 = Snackbar
+                    .make(swipeRefreshLayout, "No internet connection ", Snackbar.LENGTH_LONG);
+            snackbar1.show();
+        }
         listView = (ListView) findViewById(R.id.listview_with_fab);
         mSearchView = (SearchView) findViewById(R.id.searchView1);
         b = new ArrayList<book>();
 
         DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+
         connectedRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 boolean connected = snapshot.getValue(Boolean.class);
                 if (connected) {
-                    swipeRefreshLayout.setRefreshing(false);
+                    outAnimation = new AlphaAnimation(1f, 0f);
+                    outAnimation.setDuration(200);
+                    progressBarHolder.setAnimation(outAnimation);
+                    progressBarHolder.setVisibility(View.GONE);
+
                     Toast.makeText(MainActivity.this, "connection successful", Toast.LENGTH_SHORT).show();
                 } else {
+                    //Toast.makeText(MainActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -123,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("Value of choice", choice);
                 b.clear();
-                count=0;
+                count = 0;
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -141,35 +155,35 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     d = (String) child.child("i").getValue();
                     ed = (String) child.child("j").getValue();
                     pubi = (String) child.child("k").getValue();
-                    i = (String) child.child("l").getValue();
                     Log.e("Price is", p);
 
                     switch (choice) {
                         case "VIT":
                             if (cc.contains("VIT")) {
                                 Log.e("It is VIT cc is ", cc);
-                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
-                                count+=1;
+                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
+                                count += 1;
                             }
                             break;
                         case "Others":
                             if (!cc.contains("VIT")) {
                                 Log.e("Its not VIT cc is", cc);
 
-                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
-                                count+=1;
+                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
+                                count += 1;
                             }
                             break;
                         case "All Records":
-                            b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
-                            count+=1;
+                            b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
+                            count += 1;
                     }
 
                 }
-                Toast.makeText(MainActivity.this, "Number of books listed: "+count, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Number of books listed: "+count, Toast.LENGTH_SHORT).show();
 
                 BookAdapter itemsAdapter = new BookAdapter(MainActivity.this, b);
                 listView.setAdapter(itemsAdapter);
+                swipeRefreshLayout.setRefreshing(false);
                 listView.setTextFilterEnabled(true);
                 setupSearchView();
                 itemsAdapter.notifyDataSetChanged();
@@ -194,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Log.e("Value of choice", choice);
                                 b.clear();
-                                count=0;
+                                count = 0;
                                 // This method is called once with the initial value and again
                                 // whenever data at this location is updated.
                                 for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -211,34 +225,34 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                     d = (String) child.child("i").getValue();
                                     ed = (String) child.child("j").getValue();
                                     pubi = (String) child.child("k").getValue();
-                                    i = (String) child.child("l").getValue();
                                     Log.e("Value of cc", cc);
 
                                     switch (choice) {
                                         case "VIT":
                                             if (cc.contains("VIT")) {
                                                 Log.e("It is VIT cc is ", cc);
-                                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
-                                                count+=1;
+                                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
+                                                count += 1;
                                             }
                                             break;
                                         case "Others":
                                             if (!cc.contains("VIT")) {
                                                 Log.e("Its not VIT cc is", cc);
 
-                                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
-                                                count+=1;
+                                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
+                                                count += 1;
                                             }
                                             break;
                                         case "All Records":
-                                            b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi, i));
-                                            count+=1;
+                                            b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
+                                            count += 1;
                                     }
 
                                 }
-                                Toast.makeText(MainActivity.this, "Number of books listed: "+count, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(MainActivity.this, "Number of books listed: "+count, Toast.LENGTH_SHORT).show();
                                 BookAdapter itemsAdapter = new BookAdapter(MainActivity.this, b);
                                 listView.setAdapter(itemsAdapter);
+                                swipeRefreshLayout.setRefreshing(false);
                                 listView.setTextFilterEnabled(true);
                                 setupSearchView();
                                 itemsAdapter.notifyDataSetChanged();
@@ -264,8 +278,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(MainActivity.this, view, "transition");
+                int revealX = (int) (view.getX() + view.getWidth() / 2);
+                int revealY = (int) (view.getY() + view.getHeight() / 2);
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                startActivity(intent);
+                intent.putExtra(EditorActivity.EXTRA_CIRCULAR_REVEAL_X, revealX);
+                intent.putExtra(EditorActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY);
+
+                ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
             }
         });
 
@@ -284,26 +305,27 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         registerForContextMenu(listView);
 
     }
-/*
-    public void myClickHandler(View v) {
 
-        Dialog dialog = new Dialog(MainActivity.this);
-        dialog.setContentView(R.layout.image);
-        dialog.setTitle("This is my custom dialog box");
-        dialog.setCancelable(true);
-        RelativeLayout lin = (RelativeLayout) dialog.findViewById(R.id.child);
-        StorageReference ref = FirebaseStorage.getInstance().getReference(r);
-        //set up image view
-        ImageView img = (ImageView) dialog.findViewById(R.id.ImageView01);
+    /*
+        public void myClickHandler(View v) {
 
-        Glide.with(this)
-                .using(new FirebaseImageLoader()).load(ref)
-                .into(img);
+            Dialog dialog = new Dialog(MainActivity.this);
+            dialog.setContentView(R.layout.image);
+            dialog.setTitle("This is my custom dialog box");
+            dialog.setCancelable(true);
+            RelativeLayout lin = (RelativeLayout) dialog.findViewById(R.id.child);
+            StorageReference ref = FirebaseStorage.getInstance().getReference(r);
+            //set up image view
+            ImageView img = (ImageView) dialog.findViewById(R.id.ImageView01);
 
-        //now that the dialog is set up, it's time to show it
-        dialog.show();
-    }
-*/
+            Glide.with(this)
+                    .using(new FirebaseImageLoader()).load(ref)
+                    .into(img);
+
+            //now that the dialog is set up, it's time to show it
+            dialog.show();
+        }
+    */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -439,42 +461,4 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
-/*
-    public class FirebaseImageLoader implements StreamModelLoader<StorageReference> {
-
-        @Override
-        public DataFetcher<InputStream> getResourceFetcher(StorageReference model, int width, int height) {
-            return new FirebaseStorageFetcher(model);
-        }
-
-        private class FirebaseStorageFetcher implements DataFetcher<InputStream> {
-
-            private StorageReference mRef;
-
-            FirebaseStorageFetcher(StorageReference ref) {
-                mRef = ref;
-            }
-
-            @Override
-            public InputStream loadData(Priority priority) throws Exception {
-                return Tasks.await(mRef.getStream()).getStream();
-            }
-
-            @Override
-            public void cleanup() {
-                // No cleanup possible, Task does not expose cancellation
-            }
-
-            @Override
-            public String getId() {
-                return mRef.getPath();
-            }
-
-            @Override
-            public void cancel() {
-                // No cancellation possible, Task does not expose cancellation
-            }
-        }
-    }
-*/
 }

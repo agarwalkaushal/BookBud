@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_centerInParent="true"
+            android:id="@+id/progressBarHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center" />
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -35,17 +43,21 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_action_button_fab_with_listview"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        app:borderWidth="0dp"
+        app:layout_anchorGravity="bottom|right|end"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="20dp"
         android:baselineAlignBottom="true"
         android:scaleType="center"
-
         android:src="@drawable/ic_add_circle_white_48dp"
-        app:backgroundTint="@color/colorAccent7"
+        android:backgroundTint="@color/colorAccent7"
          />
 
 

@@ -2,6 +2,7 @@
     <string name="app_name">BookBud</string>
     <string name="main"><font fgcolor="#111111">Books OnDemand</font></string>
     <string name="editor"><font fgcolor="#111111">Add a Book</font></string>
+    <string name="info"><font fgcolor="#111111">Contact</font></string>
     <string name="action_save">Save</string>
     <string name="search_title">Course Code</string>
     <string name="search_hint">Enter here</string>

@@ -1,23 +1,31 @@
 package com.bookbud.hp.firebasebook;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -31,17 +39,20 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class EditorActivity extends AppCompatActivity {
+    public static final String EXTRA_CIRCULAR_REVEAL_X = "EXTRA_CIRCULAR_REVEAL_X";
+    public static final String EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y";
     private static final int PICK_IMAGE_REQUEST = 234;
     public static String key = NULL;
+    View rootLayout;
     private EditText name;
     private int countnew = 0;
     private int upload = 0;
-    private EditText regno;
     private EditText contact;
     private EditText coursename;
     private EditText coursecode;
@@ -55,18 +66,47 @@ public class EditorActivity extends AppCompatActivity {
     private ImageView imageView;
     private EditText desc;
     private ScrollView scrollView;
-    private String iE = "";
+    private RelativeLayout addrel;
     private int d;
+    private Bitmap bitmap;
+    private FloatingActionButton add;
     private StorageReference mStorage;
+    private int revealX;
+    private int revealY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_editor);
+        final Intent intent = getIntent();
+
+        rootLayout = findViewById(R.id.scroll);
+
+        if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                intent.hasExtra(EXTRA_CIRCULAR_REVEAL_X) &&
+                intent.hasExtra(EXTRA_CIRCULAR_REVEAL_Y)) {
+            rootLayout.setVisibility(View.INVISIBLE);
+
+            revealX = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_X, 0);
+            revealY = intent.getIntExtra(EXTRA_CIRCULAR_REVEAL_Y, 0);
+
+
+            ViewTreeObserver viewTreeObserver = rootLayout.getViewTreeObserver();
+            if (viewTreeObserver.isAlive()) {
+                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        revealActivity(revealX, revealY);
+                        rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+            }
+        } else {
+            rootLayout.setVisibility(View.VISIBLE);
+        }
         scrollView = (ScrollView) findViewById(R.id.scroll);
         name = (EditText) findViewById(R.id.input_name);
-        //regno = (EditText) findViewById(R.id.input_reg_n0);
         contact = (EditText) findViewById(R.id.input_phone);
         coursename = (EditText) findViewById(R.id.input_course);
         coursecode = (EditText) findViewById(R.id.input_code);
@@ -74,24 +114,58 @@ public class EditorActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.input_email);
         price = (EditText) findViewById(R.id.input_price);
         desc = (EditText) findViewById(R.id.input_desc);
-        //free=(ImageView) findViewById(R.id.free);
+        addrel = (RelativeLayout) findViewById(R.id.add_image_rel);
+        add = (FloatingActionButton) findViewById(R.id.add_image);
+
+        addrel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                upload = 0;
+                showFileChooser();
+            }
+        });
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                upload = 0;
+                showFileChooser();
+            }
+        });
         edition = (EditText) findViewById(R.id.input_edition);
         publisher = (EditText) findViewById(R.id.input_publisher);
         bookSpinner = (Spinner) findViewById(R.id.book_spinner);
         setupSpinner();
     }
 
+    protected void revealActivity(int x, int y) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            float finalRadius = (float) (Math.max(rootLayout.getWidth(), rootLayout.getHeight()) * 1.1);
+
+            // create the animator for this view (the start radius is zero)
+            Animator circularReveal = ViewAnimationUtils.createCircularReveal(rootLayout, x, y, 0, finalRadius);
+            circularReveal.setDuration(400);
+            circularReveal.setInterpolator(new AccelerateInterpolator());
+
+            // make the view visible and start the animation
+            rootLayout.setVisibility(View.VISIBLE);
+            circularReveal.start();
+        } else {
+            finish();
+
+        }
+    }
+
     private void setupSpinner() {
         // Create adapter for spinner. The list options are from the String array it will use
         // the spinner will use the default layout
-        ArrayAdapter genderSpinnerAdapter = ArrayAdapter.createFromResource(this,
-                R.array.array_distribute_options, android.R.layout.simple_spinner_item);
+        ArrayAdapter SpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_distribute_options, R.layout.custom_spinner_item);
 
         // Specify dropdown layout style - simple list view with 1 item per line
-        genderSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        SpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         // Apply the adapter to the spinner
-        bookSpinner.setAdapter(genderSpinnerAdapter);
+        bookSpinner.setAdapter(SpinnerAdapter);
 
         // Set the integer mSelected to the constant values
         bookSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -114,10 +188,6 @@ public class EditorActivity extends AppCompatActivity {
         });
     }
 
-    private void insertbook() {
-
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,7 +222,11 @@ public class EditorActivity extends AppCompatActivity {
                 if (d == 0) {
                     p = "Rs.0/-";
                 } else {
-                    p = "Rs. " + price.getText().toString() + "/-";
+                    if (price.getText().toString().length() == 0) {
+                        p = "Rs.0/-";
+                    } else {
+                        p = "Rs. " + price.getText().toString() + "/-";
+                    }
                 }
                 String n = name.getText().toString();
                 String a = author.getText().toString();
@@ -169,9 +243,15 @@ public class EditorActivity extends AppCompatActivity {
                 else
                     countnew += 1;
                 if (email.getText().toString().length() == 0)
-                    email.setError("Name is required!");
-                else
-                    countnew += 1;
+                    email.setError("Email is required!");
+                else {
+                    if (!Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches()) {
+                        email.setError("Invalid");
+                    } else {
+                        countnew += 1;
+                    }
+
+                }
                 if (coursename.getText().toString().length() == 0)
                     coursename.setError("Book name is required!");
                 else
@@ -182,8 +262,14 @@ public class EditorActivity extends AppCompatActivity {
                     countnew += 1;
                 if (contact.getText().toString().length() == 0)
                     contact.setError("Contact is required!");
-                else
-                    countnew += 1;
+                else {
+                    if (!Patterns.PHONE.matcher(contact.getText()).matches()) {
+                        contact.setError("Invalid");
+                    } else {
+                        countnew += 1;
+                    }
+
+                }
                 if (coursecode.getText().toString().length() == 0)
                     cc = "VIT, Vellore";
 
@@ -191,17 +277,17 @@ public class EditorActivity extends AppCompatActivity {
                 Log.e("Value of upload", String.valueOf(upload));
                 if (countnew == 5 && upload == 0) {
 
-                    myRef.child(key).setValue(new book(n, a, cn, cc, r, c, e, p, d, ed, pub, iE));
-                    Toast.makeText(EditorActivity.this, "Wait for the image to be uploaded to server, once done click check", Toast.LENGTH_LONG).show();
+                    //myRef.child(key).setValue(new book(n, a, cn, cc, r, c, e, p, d, ed, pub));
+                    //Toast.makeText(EditorActivity.this, "Wait for the image to be uploaded, once done tap check", Toast.LENGTH_LONG).show();
                     return true;
                 }
-                if (countnew == 5 && upload == 1) {
+                if (countnew == 5 && upload >= 1) {
 
-                    myRef.child(key).setValue(new book(n, a, cn, cc, r, c, e, p, d, ed, pub, iE));
+                    myRef.child(key).setValue(new book(n, a, pub, cc, r, c, e, p, d, ed, cn));
                     Toast.makeText(EditorActivity.this, "BOOK SUCCESSFULLY ADDED", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(EditorActivity.this, "Book not added, Please see if the required fields are filled", Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditorActivity.this, "BOOK NOT ADDED", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_back:
@@ -232,12 +318,14 @@ public class EditorActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmap);
+                add.setVisibility(View.INVISIBLE);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
 
     }
@@ -246,6 +334,9 @@ public class EditorActivity extends AppCompatActivity {
         //if there is a file to upload
 
         if (filePath != null) {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
+            byte[] byteArray = out.toByteArray();
             //displaying a progress dialog while upload is going on
             //final ProgressDialog progressDialog = new ProgressDialog(this);
             // progressDialog.setTitle("Uploading");
@@ -254,20 +345,20 @@ public class EditorActivity extends AppCompatActivity {
                     .make(scrollView, "Image uploading ...", Snackbar.LENGTH_INDEFINITE);
 
             snackbar1.show();
-            key=key+".jpg";
             mStorage = FirebaseStorage.getInstance().getReference();
-            StorageReference riversRef = mStorage.child(key);
-            riversRef.putFile(filePath)
+            StorageReference riversRef = mStorage.child(key + ".jpg");
+            riversRef.putBytes(byteArray)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //if the upload is successfull
                             //hiding the progress dialog
                             // progressDialog.dismiss();
+                            snackbar1.setText("IMAGE UPLOADED");
                             snackbar1.dismiss();
                             upload += 1;
                             //and displaying a success toast
-                            Toast.makeText(getApplicationContext(), "Image Uploaded ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Image Uploaded, Click check to finish adding other details ", Toast.LENGTH_LONG).show();
 
                         }
                     })
@@ -296,7 +387,7 @@ public class EditorActivity extends AppCompatActivity {
         }
         //if there is not any file
         else {
-            Toast.makeText(getApplicationContext(), "No image file found", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No image file found", Toast.LENGTH_SHORT).show();
 
         }
 

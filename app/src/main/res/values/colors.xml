@@ -8,9 +8,10 @@
     <color name="colorAccent2">#d2d2d2</color>
     <color name="colorAccent3">#000000</color>
     <color name="colorAccent4">#ffdab9</color>
-    <color name="colorAccent5">#8ed2d2d2</color>
+    <color name="colorAccent5">#8ea4a3a3</color>
     <color name="colorAccent6">#ffd000</color>
-    <color name="colorAccent7">#00ffffff</color>
+    <color name="colorAccent7">#00000000</color>
+    <color name="colorAccent8">#282626</color>
     <!-- Screens background color-->
     <color name="bg_screen1">#7df64c73</color>
     <color name="bg_screen2">#c8ff9800</color>

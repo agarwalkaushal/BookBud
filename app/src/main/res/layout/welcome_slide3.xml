@@ -22,7 +22,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="350dp"
-            android:src="@drawable/sample1" />
+            android:src="@drawable/app_splash12png"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

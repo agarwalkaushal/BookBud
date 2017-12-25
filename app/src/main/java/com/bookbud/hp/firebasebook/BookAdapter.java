@@ -3,10 +3,6 @@ package com.bookbud.hp.firebasebook;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,31 +13,19 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.stream.StreamModelLoader;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
-
-import javax.sql.DataSource;
-
-import static android.content.ContentValues.TAG;
-import static com.bookbud.hp.firebasebook.R.id.imageView;
-
 
 public class BookAdapter extends BaseAdapter implements Filterable {
 
@@ -49,7 +33,6 @@ public class BookAdapter extends BaseAdapter implements Filterable {
     public ArrayList<book> bookArrayList;
     public ArrayList<book> orig;
     private String key;
-    private String nKey;
 
     public BookAdapter(Context context, ArrayList<book> bookArrayList) {
         super();
@@ -115,14 +98,10 @@ public class BookAdapter extends BaseAdapter implements Filterable {
         final bookHolder holder;
         if (convertView == null) {
 
-
-
-
             holder = new bookHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
 
             holder.click = (Button) convertView.findViewById(R.id.button2);
-
 
             holder.nameTextView = (TextView) convertView.findViewById(R.id.name);
             holder.authorTextView = (TextView) convertView.findViewById(R.id.author);
@@ -134,13 +113,11 @@ public class BookAdapter extends BaseAdapter implements Filterable {
             holder.priceTextView = (TextView) convertView.findViewById(R.id.price);
             holder.free = (ImageView) convertView.findViewById(R.id.free1);
 
-
             convertView.setTag(holder);
         } else {
 
             holder = (bookHolder) convertView.getTag();
         }
-
 
         holder.nameTextView.setText(bookArrayList.get(position).returnName());
         holder.authorTextView.setText(bookArrayList.get(position).returnAuthor());
@@ -153,8 +130,8 @@ public class BookAdapter extends BaseAdapter implements Filterable {
         holder.editionTextView.setText(bookArrayList.get(position).returnEdition());
         holder.publisherTextView.setText(bookArrayList.get(position).returnPublisher());
         holder.desc.setText(bookArrayList.get(position).returnDesc());
-        Log.e("Price is :",bookArrayList.get(position).returnPrice());
-        key=key+".jpg";
+        Log.e("Price is :", bookArrayList.get(position).returnPrice());
+        key = key + ".jpg";
         final StorageReference ref = FirebaseStorage.getInstance().getReference(key);
 
         holder.click.setOnClickListener(new Button.OnClickListener() {
@@ -167,31 +144,26 @@ public class BookAdapter extends BaseAdapter implements Filterable {
                 dialog.setCancelable(true);
 
                 //set up image view
-                ImageView img = (ImageView) dialog.findViewById(R.id.img_glide);
-                dialog.getWindow().getAttributes().width = RelativeLayout.LayoutParams.FILL_PARENT;
+                ImageView image = (ImageView) dialog.findViewById(R.id.img_glide);
                 //now that the dialog is set up, it's time to show it
                 dialog.show();
-                Log.e("Key in BA is",key);
+
+
+                Log.e("Key in BA is", key);
                 Glide.with(context)
                         .using(new FirebaseImageLoader())
                         .load(ref)
-                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(img);
+                        .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(image);
             }
         });
 
-        //StorageReference ref = FirebaseStorage.getInstance().getReference(key);
-
-
-
 
         if (bookArrayList.get(position).returnPrice().contains(".0/")) {
-            Log.e("Inside if"," loop");
-            holder.free.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.free1));
-        }
-            else
-        {
-            Log.e("Not Inside if"," loop");
-            holder.free.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dogfold1));
+            Log.e("Inside if", " loop");
+            holder.free.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.free));
+        } else {
+            Log.e("Not Inside if", " loop");
+            holder.free.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_dogfold));
         }
 
         if (holder.desc.length() == 0) {
@@ -205,7 +177,6 @@ public class BookAdapter extends BaseAdapter implements Filterable {
         }
 
 
-
         return convertView;
 
     }
@@ -215,18 +186,16 @@ public class BookAdapter extends BaseAdapter implements Filterable {
         TextView authorTextView;
         TextView coursenameTextView;
         TextView coursecodeTextView;
-        TextView regnoTextView;
         TextView editionTextView;
         TextView publisherTextView;
         TextView priceTextView;
         ImageView free;
         TextView desc;
         Button click;
-        ImageView bookImage;
-        ProgressDialog progressDialog;
 
 
     }
+
     public class FirebaseImageLoader implements StreamModelLoader<StorageReference> {
 
         @Override
@@ -265,4 +234,4 @@ public class BookAdapter extends BaseAdapter implements Filterable {
     }
 
 
-    }
+}
