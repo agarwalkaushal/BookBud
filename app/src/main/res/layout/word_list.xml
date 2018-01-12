@@ -1,64 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_centerInParent="true"
-            android:id="@+id/progressBarHolder"
-            android:layout_width="wrap_content"
+    <ProgressBar
+        android:id="@+id/progressBarHolder"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:indeterminate="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchView1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:layout_gravity="center" />
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <android.support.v7.widget.SearchView
-        android:id="@+id/searchView1"
-        android:background="@color/colorAccent4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:background="@color/colorAccent4" />
 
-    <ListView
-        android:id="@+id/listview_with_fab"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="#000000"
-        android:dividerHeight="0px"/>
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <ListView
+                android:id="@+id/listview_with_fab"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:divider="#000000"
+                android:dividerHeight="0px" />
 
-</LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_action_button_fab_with_listview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="normal"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp"
-        app:borderWidth="0dp"
-        app:layout_anchorGravity="bottom|right|end"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
+        android:backgroundTint="@color/colorAccent7"
         android:baselineAlignBottom="true"
         android:scaleType="center"
         android:src="@drawable/ic_add_circle_white_48dp"
-        android:backgroundTint="@color/colorAccent7"
-         />
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:layout_anchorGravity="bottom|right|end"
+        app:pressedTranslationZ="12dp" />
 
 
     <!--

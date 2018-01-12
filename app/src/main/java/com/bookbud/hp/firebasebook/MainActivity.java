@@ -1,9 +1,11 @@
 package com.bookbud.hp.firebasebook;
 
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,7 +30,9 @@ import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.ListView;
-
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.games.internal.constants.NotificationChannel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +45,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
+
+    private InterstitialAd mInterstitialAd;
     public int count;
     boolean doubleBackToExitPressedOnce = false;
     AlphaAnimation inAnimation;
@@ -86,12 +92,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         */
-
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
 
         // Get details on the currently active default data network
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
         if (networkInfo != null && networkInfo.isConnected()) {
             //Toast.makeText(MainActivity.this, "Active internet connection found", Toast.LENGTH_SHORT).show();
             Snackbar snackbar1 = Snackbar
@@ -131,140 +137,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 System.err.println("Listener was cancelled");
             }
         });
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.getReference("books").orderByChild("a").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("Value of choice", choice);
-                b.clear();
-                count = 0;
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Log.e("Failed to read value.", "Before reading name");
-                    n = (String) child.child("a").getValue();
-                    Log.e("Failed to read value.", "After reading name");
-                    Log.e("Name is :", n);
-                    a = (String) child.child("c").getValue();
-                    cc = (String) child.child("e").getValue();
-                    cn = (String) child.child("d").getValue();
-                    c = (String) child.child("b").getValue();
-                    r = child.getKey();
-                    e = (String) child.child("g").getValue();
-                    p = (String) child.child("h").getValue();
-                    d = (String) child.child("i").getValue();
-                    ed = (String) child.child("j").getValue();
-                    pubi = (String) child.child("k").getValue();
-                    Log.e("Price is", p);
-
-                    switch (choice) {
-                        case "VIT":
-                            if (cc.contains("VIT")) {
-                                Log.e("It is VIT cc is ", cc);
-                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
-                                count += 1;
-                            }
-                            break;
-                        case "Others":
-                            if (!cc.contains("VIT")) {
-                                Log.e("Its not VIT cc is", cc);
-
-                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
-                                count += 1;
-                            }
-                            break;
-                        case "All Records":
-                            b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
-                            count += 1;
-                    }
-
-                }
-                //Toast.makeText(MainActivity.this, "Number of books listed: "+count, Toast.LENGTH_SHORT).show();
-
-                BookAdapter itemsAdapter = new BookAdapter(MainActivity.this, b);
-                listView.setAdapter(itemsAdapter);
-                swipeRefreshLayout.setRefreshing(false);
-                listView.setTextFilterEnabled(true);
-                setupSearchView();
-                itemsAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("Failed to read value.", String.valueOf(error.toException()));
-            }
-        });
+        getData();
         // Write a message to the database
         swipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
                         Log.e("Swipe ", "onRefresh called from SwipeRefreshLayout");
-                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        database.getReference("books").orderByChild("a").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Log.e("Value of choice", choice);
-                                b.clear();
-                                count = 0;
-                                // This method is called once with the initial value and again
-                                // whenever data at this location is updated.
-                                for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-                                    n = (String) child.child("a").getValue();
-                                    //Log.e("Name is :", n);
-                                    a = (String) child.child("c").getValue();
-                                    cc = (String) child.child("e").getValue();
-                                    cn = (String) child.child("d").getValue();
-                                    c = (String) child.child("b").getValue();
-                                    r = child.getKey();
-                                    e = (String) child.child("g").getValue();
-                                    p = (String) child.child("h").getValue();
-                                    d = (String) child.child("i").getValue();
-                                    ed = (String) child.child("j").getValue();
-                                    pubi = (String) child.child("k").getValue();
-                                    Log.e("Value of cc", cc);
-
-                                    switch (choice) {
-                                        case "VIT":
-                                            if (cc.contains("VIT")) {
-                                                Log.e("It is VIT cc is ", cc);
-                                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
-                                                count += 1;
-                                            }
-                                            break;
-                                        case "Others":
-                                            if (!cc.contains("VIT")) {
-                                                Log.e("Its not VIT cc is", cc);
-
-                                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
-                                                count += 1;
-                                            }
-                                            break;
-                                        case "All Records":
-                                            b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
-                                            count += 1;
-                                    }
-
-                                }
-                                //Toast.makeText(MainActivity.this, "Number of books listed: "+count, Toast.LENGTH_SHORT).show();
-                                BookAdapter itemsAdapter = new BookAdapter(MainActivity.this, b);
-                                listView.setAdapter(itemsAdapter);
-                                swipeRefreshLayout.setRefreshing(false);
-                                listView.setTextFilterEnabled(true);
-                                setupSearchView();
-                                itemsAdapter.notifyDataSetChanged();
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError error) {
-                                // Failed to read value
-                                Log.e("Failed to read value.", String.valueOf(error.toException()));
-                            }
-                        });
+                        getData();
                         Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -287,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 intent.putExtra(EditorActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY);
 
                 ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
+
             }
         });
 
@@ -295,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 listView.performLongClick();
                 book books = b.get(i);
-                Log.e("Value of i is", String.valueOf(i));
                 contact = books.returnContact();
                 email = books.returnEmail();
 
@@ -305,7 +185,67 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         registerForContextMenu(listView);
 
     }
+    private void getData()
+    {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.getReference("books").orderByChild("a").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                b.clear();
+                count = 0;
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
 
+                    n = (String) child.child("a").getValue();
+                    //Log.e("Name is :", n);
+                    a = (String) child.child("c").getValue();
+                    cc = (String) child.child("e").getValue();
+                    cn = (String) child.child("d").getValue();
+                    c = (String) child.child("b").getValue();
+                    r = child.getKey();
+                    e = (String) child.child("g").getValue();
+                    p = (String) child.child("h").getValue();
+                    d = (String) child.child("i").getValue();
+                    ed = (String) child.child("j").getValue();
+                    pubi = (String) child.child("k").getValue();
+
+                    switch (choice) {
+                        case "VIT":
+                            if (cc.contains("VIT")) {
+                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
+                                count += 1;
+                            }
+                            break;
+                        case "Others":
+                            if (!cc.contains("VIT")) {
+                                b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
+                                count += 1;
+                            }
+                            break;
+                        case "All Records":
+                            b.add(new book(n, a, cn, cc, r, c, e, p, d, ed, pubi));
+                            count += 1;
+                    }
+
+                }
+                //Toast.makeText(MainActivity.this, "Number of books listed: "+count, Toast.LENGTH_SHORT).show();
+                BookAdapter itemsAdapter = new BookAdapter(MainActivity.this, b);
+                listView.setAdapter(itemsAdapter);
+                swipeRefreshLayout.setRefreshing(false);
+                listView.setTextFilterEnabled(true);
+                setupSearchView();
+                itemsAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.e("Failed to read value.", String.valueOf(error.toException()));
+            }
+        });
+    }
     /*
         public void myClickHandler(View v) {
 
@@ -337,10 +277,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Log.e("Value is: ", "item is selected");
         switch (item.getItemId()) {
             case R.id.sms:
-                Log.e("Value is: ", contact);
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", contact, null)));
                 return true;
             case R.id.email:
@@ -365,10 +303,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            //case R.id.post:
-            // Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-            //  startActivity(intent);
-            //  break;
+            case R.id.refersh:
+                getData();
+                Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.menu_item_share:
                 mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
                 Intent i = new Intent(Intent.ACTION_SEND);
@@ -378,7 +316,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 sAux = sAux + "https://play.google.com/store/apps/details?id=com.bookbud.hp.firebasebook \n\n";
                 i.putExtra(Intent.EXTRA_TEXT, sAux);
                 startActivity(Intent.createChooser(i, "choose one"));
-                //setShareIntent(sharingIntent);
                 break;
             case R.id.about:
                 Intent intent1 = new Intent(MainActivity.this, info.class);
@@ -461,4 +398,5 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
+
 }

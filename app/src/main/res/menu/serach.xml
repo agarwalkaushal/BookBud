@@ -1,52 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/filter"
-        android:title="@string/search_title"
+    <item
+        android:id="@+id/refersh"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        android:title="info"
+        app:showAsAction="collapseActionView|ifRoom">
 
+    </item>
+    <item
+        android:id="@+id/filter"
         android:icon="@drawable/ic_filter_list_black_24dp"
-        app:showAsAction="collapseActionView|ifRoom"
-        >
+
+        android:title="@string/search_title"
+        app:showAsAction="collapseActionView|ifRoom">
         <menu>
-            <item android:id="@+id/vit"
+            <item
+                android:id="@+id/vit"
                 android:title="VIT, Vellore" />
-            <item android:id="@+id/others"
+            <item
+                android:id="@+id/others"
                 android:title="Others" />
             <item
                 android:id="@+id/all"
-                app:showAsAction="ifRoom"
+                android:actionProviderClass="android.widget.ShareActionProvider"
                 android:title="All Records"
-                android:actionProviderClass=
-                    "android.widget.ShareActionProvider" />
+                app:showAsAction="ifRoom" />
         </menu>
-        <!--
-    </item>
-        <item android:id="@+id/search"
-            android:title="@string/search_title"
-
-            android:icon="@drawable/ic_add_box_black_24dp"
-            app:showAsAction="collapseActionView|ifRoom">
-                 <menu>
-                    <item android:id="@+id/post"
-                    android:title="Post an Ad" />
-             </menu>
-             -->
     </item>
 
-            <item android:id="@+id/info"
-                android:title="info"
-                android:icon="@drawable/ic_info_black_24dp"
-                app:showAsAction="collapseActionView|ifRoom">
-                <menu>
-                    <item android:id="@+id/about"
-                        android:title="Contact Developer" />
-                    <item
-                        android:id="@+id/menu_item_share"
-                        app:showAsAction="ifRoom"
-                        android:title="Share app"
-                        android:actionProviderClass=
-                            "android.widget.ShareActionProvider" />
-                </menu>
+    <item
+        android:id="@+id/info"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="info"
+        app:showAsAction="collapseActionView|ifRoom">
+        <menu>
+            <item
+                android:id="@+id/about"
+                android:title="Contact Developer" />
+            <item
+                android:id="@+id/menu_item_share"
+                android:actionProviderClass="android.widget.ShareActionProvider"
+                android:title="Share app"
+                app:showAsAction="ifRoom" />
+        </menu>
 
     </item>
 </menu>

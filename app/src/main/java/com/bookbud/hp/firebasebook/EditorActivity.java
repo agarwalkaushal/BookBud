@@ -30,6 +30,10 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +45,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
@@ -49,6 +55,8 @@ public class EditorActivity extends AppCompatActivity {
     public static final String EXTRA_CIRCULAR_REVEAL_Y = "EXTRA_CIRCULAR_REVEAL_Y";
     private static final int PICK_IMAGE_REQUEST = 234;
     public static String key = NULL;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
     View rootLayout;
     private EditText name;
     private int countnew = 0;
@@ -73,6 +81,7 @@ public class EditorActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private int revealX;
     private int revealY;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,24 +126,56 @@ public class EditorActivity extends AppCompatActivity {
         addrel = (RelativeLayout) findViewById(R.id.add_image_rel);
         add = (FloatingActionButton) findViewById(R.id.add_image);
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("books");
+        key = myRef.push().getKey();
+        Log.e("key is:",key);
+
         addrel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                upload = 0;
                 showFileChooser();
             }
         });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                upload = 0;
                 showFileChooser();
             }
         });
         edition = (EditText) findViewById(R.id.input_edition);
         publisher = (EditText) findViewById(R.id.input_publisher);
         bookSpinner = (Spinner) findViewById(R.id.book_spinner);
+
+
         setupSpinner();
+    }
+
+    protected void showInterstitial()
+    {
+        InterstitialAd mInterstitialAd;
+        mInterstitialAd = new InterstitialAd(this);
+
+        MobileAds.initialize(this, "ca-app-pub-1736689032211248~2268362938");
+        mInterstitialAd.setAdUnitId("ca-app-pub-1736689032211248/9524585161");
+        AdRequest adRequestInterstitial = new AdRequest.Builder().addTestDevice("DB87789ADD286D94F9D5F938BA2BC5A6").build();
+        mInterstitialAd.loadAd(adRequestInterstitial);
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+
+            }
+
+            @Override
+            public void onAdLoaded() {
+                showInterstitial();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+            }
+        });
     }
 
     protected void revealActivity(int x, int y) {
@@ -199,26 +240,17 @@ public class EditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("books");
 
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_photo:
-                upload = 0;
                 showFileChooser();
-                Log.e("Value of upload in show", String.valueOf(upload));
-            case R.id.upload_photo:
-                Log.e("Value of uploa in uploa", String.valueOf(upload));
-                key = myRef.push().getKey();
-                Log.e("Key of upload", key);
                 break;
             case R.id.action_save:
                 uploadFile();
                 countnew = 0;
                 String p;
-                Log.e("Value of d: ", String.valueOf(d));
                 if (d == 0) {
                     p = "Rs.0/-";
                 } else {
@@ -285,22 +317,33 @@ public class EditorActivity extends AppCompatActivity {
 
                     myRef.child(key).setValue(new book(n, a, pub, cc, r, c, e, p, d, ed, cn));
                     Toast.makeText(EditorActivity.this, "BOOK SUCCESSFULLY ADDED", Toast.LENGTH_SHORT).show();
+                    //sendNotificationToUser("Hi,", "New Book Added!");
                     finish();
                 } else {
                     Toast.makeText(EditorActivity.this, "BOOK NOT ADDED", Toast.LENGTH_SHORT).show();
+                    break;
                 }
                 return true;
             case R.id.action_back:
                 finish();
-                return true;
-            case android.R.id.home:
-                // Navigate back to parent activity (CatalogActivity)
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
+    /*
+    public static void sendNotificationToUser(String user, final String message) {
 
+        Firebase ref = new Firebase(FIREBASE_URL);
+        final Firebase notifications = ref.child("notificationRequests");
+
+        Map notification = new HashMap<>();
+        notification.put("username", user);
+        notification.put("message", message);
+
+        notifications.push().setValue(notification);
+
+    }
+    */
     private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -314,14 +357,13 @@ public class EditorActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         imageView = (ImageView) findViewById(R.id.imageView);
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmap);
                 add.setVisibility(View.INVISIBLE);
-
+                upload=0;
             } catch (IOException e) {
                 e.printStackTrace();
             }

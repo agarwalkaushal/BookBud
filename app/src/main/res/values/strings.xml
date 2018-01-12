@@ -20,4 +20,7 @@
 
     <string name="slide_3_title">Great Discounts</string>
     <string name="slide_3_desc">Best discounts on every single service we offer!</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">News</string>
 </resources>
