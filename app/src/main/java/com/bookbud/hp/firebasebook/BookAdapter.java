@@ -20,6 +20,8 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.stream.StreamModelLoader;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -147,7 +149,6 @@ public class BookAdapter extends BaseAdapter implements Filterable {
                 ImageView image = (ImageView) dialog.findViewById(R.id.img_glide);
                 //now that the dialog is set up, it's time to show it
                 dialog.show();
-
 
                 Log.e("Key in BA is", key);
                 Glide.with(context)

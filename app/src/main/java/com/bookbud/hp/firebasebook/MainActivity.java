@@ -32,6 +32,7 @@ import android.widget.Filter;
 import android.widget.ListView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.games.internal.constants.NotificationChannel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -92,6 +93,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         */
+        MobileAds.initialize(this, "ca-app-pub-1736689032211248~2268362938");
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-1736689032211248/9524585161");
+        AdRequest request = new AdRequest.Builder().addTestDevice("DB87789ADD286D94F9D5F938BA2BC5A6").build();
+        request.isTestDevice(MainActivity.this);
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -147,6 +156,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         getData();
                         Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
                         swipeRefreshLayout.setRefreshing(false);
+                        if (mInterstitialAd.isLoaded()) {
+                            mInterstitialAd.show();
+                        } else {
+                            Log.d("TAG", "The interstitial wasn't loaded yet.");
+                        }
                     }
                 }
 
@@ -158,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation(MainActivity.this, view, "transition");
                 int revealX = (int) (view.getX() + view.getWidth() / 2);
@@ -167,6 +182,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 intent.putExtra(EditorActivity.EXTRA_CIRCULAR_REVEAL_Y, revealY);
 
                 ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                }
 
             }
         });

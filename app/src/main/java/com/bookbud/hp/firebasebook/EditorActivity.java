@@ -90,6 +90,10 @@ public class EditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editor);
         final Intent intent = getIntent();
 
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-1736689032211248/6366288333");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
         rootLayout = findViewById(R.id.scroll);
 
         if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
@@ -151,32 +155,6 @@ public class EditorActivity extends AppCompatActivity {
         setupSpinner();
     }
 
-    protected void showInterstitial()
-    {
-        InterstitialAd mInterstitialAd;
-        mInterstitialAd = new InterstitialAd(this);
-
-        MobileAds.initialize(this, "ca-app-pub-1736689032211248~2268362938");
-        mInterstitialAd.setAdUnitId("ca-app-pub-1736689032211248/9524585161");
-        AdRequest adRequestInterstitial = new AdRequest.Builder().addTestDevice("DB87789ADD286D94F9D5F938BA2BC5A6").build();
-        mInterstitialAd.loadAd(adRequestInterstitial);
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-
-            }
-
-            @Override
-            public void onAdLoaded() {
-                showInterstitial();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-            }
-        });
-    }
 
     protected void revealActivity(int x, int y) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -363,6 +341,11 @@ public class EditorActivity extends AppCompatActivity {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmap);
                 add.setVisibility(View.INVISIBLE);
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                }
                 upload=0;
             } catch (IOException e) {
                 e.printStackTrace();
