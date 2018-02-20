@@ -144,7 +144,7 @@ public class BookAdapter extends BaseAdapter implements Filterable {
                 dialog.setContentView(R.layout.image);
                 dialog.setTitle("This is my custom dialog box");
                 dialog.setCancelable(true);
-
+                holder.click.setClickable(false);
                 //set up image view
                 ImageView image = (ImageView) dialog.findViewById(R.id.img_glide);
                 //now that the dialog is set up, it's time to show it
@@ -155,6 +155,7 @@ public class BookAdapter extends BaseAdapter implements Filterable {
                         .using(new FirebaseImageLoader())
                         .load(ref)
                         .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(image);
+                holder.click.setClickable(true);
             }
         });
 

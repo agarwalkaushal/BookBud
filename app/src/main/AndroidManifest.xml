@@ -52,6 +52,7 @@
             </intent-filter>
         </activity>
         <activity
+
             android:name=".MainActivity"
             android:label="@string/main"
             android:windowSoftInputMode="adjustPan"
@@ -71,6 +72,7 @@
             android:name=".WelcomeActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name=".info"
+
             android:label="@string/info"
             android:screenOrientation="portrait"/>
     </application>

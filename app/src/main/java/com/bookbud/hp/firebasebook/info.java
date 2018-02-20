@@ -16,6 +16,8 @@ public class info extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ImageView img = (ImageView) findViewById(R.id.facebook);
         img.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -65,7 +67,8 @@ public class info extends AppCompatActivity {
             // Intent intent = new Intent(MainActivity.this, EditorActivity.class);
             //  startActivity(intent);
             //  break;
-            case R.id.action_back:
+
+            case android.R.id.home:
                 finish();
             default:
                 return super.onOptionsItemSelected(item);

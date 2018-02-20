@@ -89,7 +89,8 @@ public class EditorActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_editor);
         final Intent intent = getIntent();
-
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_24dp);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-1736689032211248/6366288333");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
@@ -302,7 +303,8 @@ public class EditorActivity extends AppCompatActivity {
                     break;
                 }
                 return true;
-            case R.id.action_back:
+
+            case android.R.id.home:
                 finish();
 
         }
