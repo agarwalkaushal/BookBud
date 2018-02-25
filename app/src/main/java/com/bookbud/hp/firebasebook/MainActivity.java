@@ -1,8 +1,10 @@
 package com.bookbud.hp.firebasebook;
 
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -28,7 +30,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Filter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.AdRequest;
@@ -41,6 +45,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -109,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         AdRequest request = new AdRequest.Builder().addTestDevice("DB87789ADD286D94F9D5F938BA2BC5A6").build();
         request.isTestDevice(MainActivity.this);
 
-
+        AppRater.app_launched(this);
 
 
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -374,26 +379,37 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 break;
             case R.id.vit:
                 choice = "VIT";
-                Snackbar snackbar = Snackbar
-                        .make(listView, "Swipe down to refresh list", Snackbar.LENGTH_LONG);
-
-                snackbar.show();
+                mInterstitialAdRefresh.loadAd(new AdRequest.Builder().build());
+                if (mInterstitialAdRefresh.isLoaded()) {
+                    mInterstitialAdRefresh.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                }
+                getData();
+                Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
                 //Toast.makeText(MainActivity.this, "Swipe down to refresh list", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.others:
                 choice = "Others";
-                Snackbar snackbar1 = Snackbar
-                        .make(listView, "Swipe down to refresh list", Snackbar.LENGTH_LONG);
-
-                snackbar1.show();
-
+                mInterstitialAdRefresh.loadAd(new AdRequest.Builder().build());
+                if (mInterstitialAdRefresh.isLoaded()) {
+                    mInterstitialAdRefresh.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                }
+                getData();
+                Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
                 //Toast.makeText(MainActivity.this, "Swipe down to refresh list", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.all:
-                Snackbar snackbar2 = Snackbar
-                        .make(listView, "Swipe down to refresh list", Snackbar.LENGTH_LONG);
-
-                snackbar2.show();
+                mInterstitialAdRefresh.loadAd(new AdRequest.Builder().build());
+                if (mInterstitialAdRefresh.isLoaded()) {
+                    mInterstitialAdRefresh.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                }
+                getData();
+                Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
                 choice = "All Records";
                 //Toast.makeText(MainActivity.this, "Swipe down to refresh list", Toast.LENGTH_SHORT).show();
                 break;
@@ -451,3 +467,4 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 }
+

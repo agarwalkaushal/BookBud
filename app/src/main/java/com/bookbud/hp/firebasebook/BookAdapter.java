@@ -96,7 +96,7 @@ public class BookAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final bookHolder holder;
         if (convertView == null) {
 
@@ -142,7 +142,7 @@ public class BookAdapter extends BaseAdapter implements Filterable {
             public void onClick(View v) {
                 Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.image);
-                dialog.setTitle("This is my custom dialog box");
+                dialog.setTitle(bookArrayList.get(position).returnName());
                 dialog.setCancelable(true);
                 holder.click.setClickable(false);
                 //set up image view
