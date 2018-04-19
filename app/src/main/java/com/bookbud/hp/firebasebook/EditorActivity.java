@@ -153,7 +153,7 @@ public class EditorActivity extends AppCompatActivity {
         bookSpinner = (Spinner) findViewById(R.id.book_spinner);
 
 
-        setupSpinner();
+            setupSpinner();
     }
 
 
