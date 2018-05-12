@@ -52,6 +52,15 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:src="@drawable/linkedin"/>
+                <ImageView
+                    android:background="?android:attr/selectableItemBackground"
+                    android:id="@+id/instagram"
+                    android:layout_width="50dp"
+                    android:elevation="30dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:src="@drawable/if_instagram_circle_color_107172"/>
         </LinearLayout>
         <TextView
             android:padding="30dp"
