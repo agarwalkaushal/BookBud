@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1069276707018",
+    "firebase_url": "https://fir-book-12e70.firebaseio.com",
+    "project_id": "fir-book-12e70",
+    "storage_bucket": "fir-book-12e70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069276707018:android:a608ddf30c799c7f",
+        "android_client_info": {
+          "package_name": "com.bookbud.hp.firebasebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069276707018-42fnhd8t5oknt1cg0qnphjgag2ql14a1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bookbud.hp.firebasebook",
+            "certificate_hash": "266136328f94fd3e803a1d936949965dca0e5854"
+          }
+        },
+        {
+          "client_id": "1069276707018-lgh50h8ujasmmpadsaqij3e49rdombrj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEeDxrdC0M0gwl1NQ1dDnhsNA_0RApjiQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069276707018-lgh50h8ujasmmpadsaqij3e49rdombrj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

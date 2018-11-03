@@ -2,13 +2,9 @@ package com.bookbud.hp.firebasebook;
 
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,21 +27,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.Filter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import com.google.android.gms.games.internal.constants.NotificationChannel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mobfox.sdk.interstitialads.InterstitialAd;
-import com.mobfox.sdk.interstitialads.InterstitialAdListener;
 
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -77,49 +67,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private ArrayList<book> b;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ShareActionProvider mShareActionProvider;
-    InterstitialAd interstitial;
-    InterstitialAdListener listener;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
-
-        interstitial = new InterstitialAd(this);
-
-        final Activity self = this;
-        InterstitialAdListener listener = new InterstitialAdListener() {
-            @Override
-            public void onInterstitialLoaded(InterstitialAd interstitial) {
-                //Toast.makeText(self, "loaded", Toast.LENGTH_SHORT).show();
-                //call show() to display the interstitial when its finished loading
-                interstitial.show();
-            }
-            @Override
-            public void onInterstitialFailed(InterstitialAd interstitial, Exception e) {
-                //Toast.makeText(self, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onInterstitialClosed(InterstitialAd interstitial) {
-                //Toast.makeText(self, "closed", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onInterstitialFinished() {
-                //Toast.makeText(self, "finished", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onInterstitialClicked(InterstitialAd interstitial) {
-                //Toast.makeText(self, "clicked", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onInterstitialShown(InterstitialAd interstitial) {
-                //Toast.makeText(self, "shown", Toast.LENGTH_SHORT).show();
-            }
-        };
-        interstitial.setListener(listener);
-        interstitial.setInventoryHash("ccef1c146fecd7f511c24ed54219bf6d");
-        //interstitial.setInventoryHash("267d72ac3f77a3f447b32cf7ebf20673");
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         progressBarHolder = (ProgressBar) findViewById(R.id.progressBarHolder);
         inAnimation = new AlphaAnimation(0f, 1f);
@@ -127,22 +79,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         progressBarHolder.setAnimation(inAnimation);
         progressBarHolder.setVisibility(View.VISIBLE);
 
-        /*
-        MobileAds.initialize(this, "ca-app-pub-1736689032211248~2268362938");
-
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-1736689032211248/9524585161");
-
-        mInterstitialAdLoad = new InterstitialAd(this);
-        mInterstitialAdLoad.setAdUnitId("ca-app-pub-1736689032211248/1966111969");
-        mInterstitialAdLoad.loadAd(new AdRequest.Builder().build());
-        mInterstitialAdRefresh = new InterstitialAd(this);
-        mInterstitialAdRefresh.setAdUnitId("ca-app-pub-1736689032211248/1966111969");
-
-        AdRequest request = new AdRequest.Builder().addTestDevice("DB87789ADD286D94F9D5F938BA2BC5A6").build();
-        request.isTestDevice(MainActivity.this);
-        */
-        AppRater.app_launched(this);
+         AppRater.app_launched(this);
 
 
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -197,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        interstitial.load();
+
                         Log.e("Swipe ", "onRefresh called from SwipeRefreshLayout");
                         getData();
                         Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
@@ -215,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                interstitial.load();
+
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation(MainActivity.this, view, "transition");
                 int revealX = (int) (view.getX() + view.getWidth() / 2);
@@ -363,7 +300,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.refersh:
-                interstitial.load();
                 getData();
                 Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
                 break;
@@ -378,26 +314,26 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 startActivity(Intent.createChooser(i, "choose one"));
                 break;
             case R.id.about:
-                interstitial.load();
+
                 Intent intent1 = new Intent(MainActivity.this, info.class);
                 startActivity(intent1);
                 break;
             case R.id.vit:
                 choice = "VIT";
-                interstitial.load();
+
                 getData();
                 Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
                 //Toast.makeText(MainActivity.this, "Swipe down to refresh list", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.others:
                 choice = "Others";
-                interstitial.load();
+
                 getData();
                 Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
                 //Toast.makeText(MainActivity.this, "Swipe down to refresh list", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.all:
-                interstitial.load();
+
                 getData();
                 Toast.makeText(MainActivity.this, "list updated", Toast.LENGTH_SHORT).show();
                 choice = "All Records";
